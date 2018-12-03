@@ -1,14 +1,15 @@
 import React from 'react';
+import Map from './map';
+import Sidebar from './sidebar';
 
 class App extends React.Component {
-  super() {
-    
-  }
-
   render() {
-    <div>
-      <h2>Hello World!</h2>
-    </div>
+    return (
+      <div>
+        <Map />
+        <Sidebar />
+      </div>
+    );
   }
 }
 
