@@ -1,11 +1,27 @@
+.topbar {
+  border: 1px solid black;
+  height: 100px;
+  margin: 10px;
+  padding: 20px;
+}
+
 .map {
-  height: 500px;
-  width: 500px;
-  position: relative;
+  border: 1px black solid;
+  height: 100%;
+  width: 70%;
+  float: right;
+  margin-top: 10px;
 }
 
 .sidebar {
+  margin: 10px;
+  float: left;
   border: 1px solid blue;
-  height: 100%;
-  width: 100px;
+  height: 600px;
+  width: 20%;
+  padding: 20px;
+}
+
+#report {
+  font-size: 2em;
 }
