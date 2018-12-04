@@ -2,7 +2,7 @@ import React from 'react';
 import Map from './map';
 import Sidebar from './sidebar';
 
-class App extends React.Component {
+export default class App extends React.Component {
   render() {
     return (
       <div>
@@ -13,4 +13,3 @@ class App extends React.Component {
   }
 }
 
-export default App;
