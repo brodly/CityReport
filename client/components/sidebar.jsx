@@ -24,6 +24,9 @@ export default class Sidebar extends Component {
         <form>
           First name: <input type="text" name="fname"/><br/>
           Last name: <input type="text" name="lname"/><br/>
+          Email: <input type="text" name="email" /><br />
+          Telephone: <input type="text" name="telephone" /><br />
+          Description of Issue: <input type="text" name="issue" /><br />
           <input type="submit" value="Submit"/>
         </form>
       </div>
