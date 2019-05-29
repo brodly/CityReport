@@ -1,26 +1,44 @@
-.topbar {
-  border: 1px solid black;
-  height:80px;
-  margin: 10px;
+.main {
   padding: 20px;
 }
 
-.map {
-  height: 100%;
-  width: 70%;
+.topbar {
+  border: 1px solid black;
+  height: 80px;
+  font-size: 2em;
+  margin-bottom: 10px;
+  padding: 20px;
+}
+
+.topbar button {
+  font-size: 1em;
   float: right;
-  margin-top: 10px;
 }
 
 .sidebar {
-  margin: 10px;
-  float: left;
+  overflow: scroll;
   border: 1px solid black;
+  float: right;
   height: 600px;
-  width: 20%;
-  padding: 20px;
+  width: 20%
 }
 
-#report {
-  font-size: 2em;
+.report {
+  border: 1px solid black;
+  margin: 4px;
+  padding: 2px;
+}
+
+.submit-form {
+  border: 1px solid black;
+  position: fixed;
+  width: auto;
+  height: auto;
+  display: none;
+  z-index: 3;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: white;
+  font-size: 1.5em;
+  left: 30%;
 }
