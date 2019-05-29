@@ -1,9 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import Map from './components/map';
-import Sidebar from './components/sidebar';
-import Topbar from './components/topbar';
-import Report from './components/report';
+import {
+  MapContainer,
+  SubmitForm,
+  Topbar,
+  Report,
+ } from './components';
 
 export default class App extends React.Component {
   constructor() {
@@ -14,37 +16,30 @@ export default class App extends React.Component {
     this.fetchData = this.fetchData.bind(this);
   }
 
-  fetchData(val) {
-    axios.get(`/${val}`)
-      .then((res) => {
-        this.setState({
-          data: res.data,
-        })
-      })
+  fetchData() {
+    axios.get(`/search?zipcode=91606`)
+      .then(res => { this.setState({ data: res.data }); })
       .catch(err => { throw err });
   }
 
   componentDidMount() {
-    this.fetchData(1);
+    this.fetchData();
   }
 
   render() {
     const { data } = this.state;
-    
+
     return (
-      <div>
-        <div className="topbar">
-          <Topbar />
-        </div>
+      <div className="main">
+        <Topbar />
+        <SubmitForm docs={data}/>
+        <MapContainer docs={data}/>
         <div className="sidebar">
-          <Sidebar />
-          <Report props={data} />
-          <Report props={data} />
+          {data.map(report => (
+            <Report key={report._id} docs={report} />
+          ))}
         </div>
-        <div className="map">
-          <Map />
-        </div>
-      </div>      
+      </div>
     );
   }
 }
