@@ -3,9 +3,8 @@ import React, { Component } from 'react';
 export default class Report extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props)
     this.state = {
-      title: 'Default Report Title',
+
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -15,12 +14,12 @@ export default class Report extends Component {
   }
 
   render() {
-    
-    const { title } = this.state;
+    const { address, requesttype } = this.props.docs;
 
     return (
       <div className="report">
-        <h2>{title}</h2>
+        <div id="title">{address}</div>
+        <div id="desc">{requesttype}</div>
         <input onSubmit={this.handleSubmit} type="submit" value="Update" />
         <input onSubmit={this.handleSubmit} type="submit" value="Delete" />
       </div>
