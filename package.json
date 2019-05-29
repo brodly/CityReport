@@ -8,7 +8,7 @@
     "express": "^4.16.4",
     "google-maps-react": "^2.0.2",
     "knex": "^0.15.2",
-    "nodemon": "^1.18.7",
+    "mongoose": "^5.5.11",
     "pg": "^7.7.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3"
@@ -24,12 +24,14 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
+    "nodemon": "^1.18.7",
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2"
   },
   "scripts": {
     "test": "test",
-    "start": "nodemon server/index.js",
+    "dev": "nodemon server/index.js",
+    "start": "node server/index.js",
     "build": "webpack --watch",
     "lint": "eslint ."
   },
