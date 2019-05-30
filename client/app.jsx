@@ -17,7 +17,7 @@ export default class App extends React.Component {
   }
 
   fetchData() {
-    axios.get(`/search?zipcode=91606`)
+    axios.get(`/search`)
       .then(res => { this.setState({ data: res.data }); })
       .catch(err => { throw err });
   }
@@ -36,7 +36,7 @@ export default class App extends React.Component {
         <MapContainer docs={data}/>
         <div className="sidebar">
           {data.map(report => (
-            <Report key={report._id} docs={report} />
+            <Report key={report._id} report={report} />
           ))}
         </div>
       </div>
