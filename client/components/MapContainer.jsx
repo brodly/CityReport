@@ -21,7 +21,11 @@ export class MapContainer extends Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
-      initialCenter: { lat: 34.1867746, lng: -118.3951641 },
+      initialCenter: {
+        lat: 34.0139008,
+        lng: -118.3966708
+      },
+      zoom: 11,
     };
 
     this.onMapClick    = this.onMapClick.bind(this);
@@ -53,7 +57,7 @@ export class MapContainer extends Component {
   };
 
   render() {
-    const { initialCenter } = this.state;
+    const { initialCenter, zoom } = this.state;
     const { docs: markers, google } = this.props;
     const { container, map } = styles;
 
@@ -64,7 +68,7 @@ export class MapContainer extends Component {
     return (
       <Map
         google={google}
-        zoom={14}
+        zoom={zoom}
         style={map}
         containerStyle={container}
         initialCenter={initialCenter}
@@ -82,6 +86,7 @@ export class MapContainer extends Component {
           visible={this.state.showingInfoWindow}
           onClose={this.onClose}>
           <div>
+            <h3>{this.state.selectedPlace.title}</h3>
             <h4>{this.state.selectedPlace.name}</h4>
           </div>
         </InfoWindow>
