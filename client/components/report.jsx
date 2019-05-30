@@ -14,7 +14,7 @@ export default class Report extends Component {
   }
 
   render() {
-    const { address, requesttype } = this.props.docs;
+    const { address, requesttype } = this.props.report;
 
     return (
       <div className="report">
