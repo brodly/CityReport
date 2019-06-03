@@ -1,46 +1,48 @@
 import React from 'react';
 import axios from 'axios';
 import List from '@material-ui/core/List';
-
 import {
   MapContainer,
   SubmitForm,
   Topbar,
   Report,
+  Search,
  } from './components';
+
+const defaultData = [
+  'requesttype=Single Streetlight Issue',
+  'requesttype=Homeless Encampment',
+];
 
 export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
       data: [],
-      selectedListItem: null,
     }
 
-    this.fetchData          = this.fetchData.bind(this);
-    this.handleOnMouseEnter = this.handleOnMouseEnter.bind(this);
+    this.fetchData    = this.fetchData.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
   }
 
-  fetchData() {
-    const issues = [
-      'Graffiti Removal',
-      'Single Streetlight Issue',
-      'Multiple Streetlight Issue',
-    ];
+  fetchData(data) {
+    if (data && data.length > 0) {
+      data = data.join("" + '&');
 
-    const query = issues.map((issue) => `requesttype=${issue}&`).join('').replace(/&\s*$/, "");
-
-    axios.get(`/search?${query}`)
+      axios.get(`/search?${data}`)
       .then(res => { this.setState({ data: res.data }); })
       .catch(err => { throw err });
+    } else {
+      this.setState({ data: [] })
+    }
   }
 
-  handleOnMouseEnter(selectedListItem) {
-    // this.setState({ selectedListItem });
+  handleFilter(data) {
+    this.fetchData(data)
   }
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchData(defaultData);
   }
 
   render() {
@@ -50,16 +52,11 @@ export default class App extends React.Component {
       <div className="main">
         <Topbar />
         <SubmitForm docs={data}/>
-        <MapContainer docs={data} selectedListItem={selectedListItem}/>
+        <MapContainer docs={data}/>
         <div className="sidebar">
-          <List dense={true}>
-            {data.map((report, index) => (
-              <Report
-                key={report._id}
-                report={report}
-                index={index}
-                handleOnMouseEnter={this.handleOnMouseEnter}/>
-            ))}
+          <List dense>
+            <Search handleFilter={this.handleFilter}/>
+            {data.map((report, index) => (<Report key={report._id} report={report} />))}
           </List>
         </div>
       </div>
