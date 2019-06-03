@@ -1,27 +1,43 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+
+const defaultState = {
+  location: '',
+  serviceType: '',
+  serviceLocation: '',
+  fname: '',
+  lname: '',
+  email: '',
+  phone: '',
+  desc: '',
+}
+
 export default class SubmitForm extends Component {
   constructor() {
     super();
-    this.state = {
-      serviceslist: '',
-      fname: '',
-      lname: '',
-      email: '',
-      phone: '',
-      desc: '',
-    };
-
+    this.state        = defaultState;
     this.onChange     = this.onChange.bind(this);
     this.closeForm    = this.closeForm.bind(this);
     this.onCloseClick = this.onCloseClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
+  onChange(name) {
+    return (event) => {
+      this.setState({ [name]: event.target.value });
+    }
+  };
+
   closeForm() {
     document.querySelector(".submit-form").style.display = "none";
   }
@@ -33,14 +49,17 @@ export default class SubmitForm extends Component {
   handleSubmit(e) {
     this.closeForm();
     axios.post('/submit', this.state)
-      .then((res)=> console.log(res))
-    alert('Report submitted!');
+      .then((res) => console.log(res))
+      .catch((err) => console.error('Error submiting'))
+    this.setState(defaultState);
     e.preventDefault();
   }
 
   render() {
     const {
-      serviceslist,
+      location,
+      serviceType,
+      serviceLocation,
       fname,
       lname,
       email,
@@ -50,27 +69,103 @@ export default class SubmitForm extends Component {
 
     return (
       <div className="submit-form">
-        <div id="header">
-          <label id="report">Report an issue</label>
-          <button onClick={this.onCloseClick} style={{float: "right"}}>X</button>
-        </div>
-        <select name="serviceslist" form="reportform" onChange={this.onChange} value={serviceslist}>
-          <option value="pothole">Pothole</option>
-          <option value="hydrant">Fire Hydrant</option>
-          <option value="lamppost">Lamp Post</option>
-          <option value="manhole">Manhole</option>
-        </select>
-        <br/>
-        <form id="reportform" onSubmit={this.handleSubmit}>
-          First name: <input type="text" name="fname" onChange={this.onChange} value={fname}/><br/>
-          Last name: <input type="text" name="lname" onChange={this.onChange} value={lname}/><br/>
-          Email: <input type="text" name="email" onChange={this.onChange} value={email}/><br />
-          Telephone: <input type="text" name="phone" onChange={this.onChange} value={phone}/><br />
-          Description of Issue: <input type="text" name="desc" onChange={this.onChange} value={desc}/><br />
-          <input type="submit" value="Submit"/>
+        <form noValidate autoComplete="off">
+          <div>
+            <div class="title">
+              <Typography variant="h6">Report an issue</Typography>
+            </div>
+            <div class="row">
+              <div>
+                <InputLabel shrink>Service Type</InputLabel>
+                <Select
+                  value={serviceType}
+                  onChange={this.onChange('serviceType')}>
+                  <MenuItem value=""><em>None</em></MenuItem>
+                  <MenuItem value="pothole">Pothole</MenuItem>
+                  <MenuItem value="graffiti">Graffiti</MenuItem>
+                  <MenuItem value="single-streetlight">Single Streetlight</MenuItem>
+                  <MenuItem value="multiple-streetlight">Multiple Streetlight</MenuItem>
+                </Select>
+                <FormHelperText>Select Issue</FormHelperText>
+              </div>
+              <div>
+                <InputLabel shrink>Location</InputLabel>
+                <Select
+                  value={serviceLocation}
+                  onChange={this.onChange('serviceLocation')}>
+                  <MenuItem value=""><em>None</em></MenuItem>
+                  <MenuItem value="alley">Alley</MenuItem>
+                  <MenuItem value="street">Street</MenuItem>
+                </Select>
+                <FormHelperText>Select location of issue</FormHelperText>
+              </div>
+            </div>
+            <div class="row">
+              <FormControl>
+                <TextField
+                  id="location"
+                  label="Address of issue"
+                  value={location}
+                  onChange={this.onChange('location')}
+                  margin="dense"/>
+                <FormHelperText>Examples: "14410 Sylvan St" or "Sunset Blvd / Vermont Ave"</FormHelperText>
+              </FormControl>
+            </div>
+            <div class="row">
+            <FormControl fullWidth>
+              <TextField
+                id="desc"
+                label="Description of issue"
+                value={desc}
+                onChange={this.onChange('desc')}
+                margin="dense"
+                rows='3'
+                multiline/>
+                <FormHelperText shrink>Max 750 characters</FormHelperText>
+              </FormControl>
+            </div>
+          </div>
+          <br/>
+          <div>
+            <div class="title">
+              <Typography variant="h6">Contact Information</Typography>
+              <InputLabel shrink>Enter contact information or leave blank to submit anonymously</InputLabel>
+            </div>
+            <div class="row">
+              <TextField
+                id="first-name"
+                label="First Name"
+                value={fname}
+                onChange={this.onChange('fname')}
+                margin="dense"/>
+              <TextField
+                id="last-name"
+                label="Last Name"
+                value={lname}
+                onChange={this.onChange('lname')}
+                margin="dense"/>
+            </div>
+            <div class="row">
+              <TextField
+                id="email"
+                label="Email"
+                value={email}
+                onChange={this.onChange('email')}
+                margin="dense"/>
+              <TextField
+                id="phone"
+                label="Telephone"
+                value={phone}
+                onChange={this.onChange('phone')}
+                margin="dense"/>
+            </div>
+          </div>
         </form>
+        <div class="footer">
+          <Button edge="start" color="primary" variant="contained" onClick={this.handleSubmit}>Submit</Button>
+          <Button edge="end" color="secondary" onClick={this.onCloseClick}>Close</Button>
+        </div>
       </div>
-
     );
   }
 };
