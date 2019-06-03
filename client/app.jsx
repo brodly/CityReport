@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import List from '@material-ui/core/List';
+
 import {
   MapContainer,
   SubmitForm,
@@ -12,14 +14,29 @@ export default class App extends React.Component {
     super();
     this.state = {
       data: [],
+      selectedListItem: null,
     }
-    this.fetchData = this.fetchData.bind(this);
+
+    this.fetchData          = this.fetchData.bind(this);
+    this.handleOnMouseEnter = this.handleOnMouseEnter.bind(this);
   }
 
   fetchData() {
-    axios.get(`/search`)
+    const issues = [
+      'Graffiti Removal',
+      'Single Streetlight Issue',
+      'Multiple Streetlight Issue',
+    ];
+
+    const query = issues.map((issue) => `requesttype=${issue}&`).join('').replace(/&\s*$/, "");
+
+    axios.get(`/search?${query}`)
       .then(res => { this.setState({ data: res.data }); })
       .catch(err => { throw err });
+  }
+
+  handleOnMouseEnter(selectedListItem) {
+    // this.setState({ selectedListItem });
   }
 
   componentDidMount() {
@@ -27,20 +44,25 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { data } = this.state;
+    const { data, selectedListItem } = this.state;
 
     return (
       <div className="main">
         <Topbar />
         <SubmitForm docs={data}/>
-        <MapContainer docs={data}/>
+        <MapContainer docs={data} selectedListItem={selectedListItem}/>
         <div className="sidebar">
-          {data.map(report => (
-            <Report key={report._id} report={report} />
-          ))}
+          <List dense={true}>
+            {data.map((report, index) => (
+              <Report
+                key={report._id}
+                report={report}
+                index={index}
+                handleOnMouseEnter={this.handleOnMouseEnter}/>
+            ))}
+          </List>
         </div>
       </div>
     );
   }
 }
-
