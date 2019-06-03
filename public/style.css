@@ -1,44 +1,34 @@
-.main {
-  padding: 20px;
-}
-
-.topbar {
-  border: 1px solid black;
-  height: 80px;
-  font-size: 2em;
-  margin-bottom: 10px;
-  padding: 20px;
-}
-
-.topbar button {
-  font-size: 1em;
-  float: right;
-}
-
 .sidebar {
   overflow: scroll;
-  border: 1px solid black;
   float: right;
-  height: 600px;
-  width: 20%
-}
-
-.report {
-  border: 1px solid black;
-  margin: 4px;
-  padding: 2px;
+  height: 88vh;
+  width: 23vw;
 }
 
 .submit-form {
   border: 1px solid black;
   position: fixed;
-  width: auto;
+  width: 400px;
   height: auto;
   display: none;
-  z-index: 3;
-  padding: 10px;
-  border-radius: 10px;
+  z-index: 4;
+  border-radius: 5px;
   background-color: white;
-  font-size: 1.5em;
+  top: 12%;
   left: 30%;
+  padding: 15px;
+}
+
+.submit-form .footer, .row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.submit-form .footer {
+  margin-top: 20px;
+}
+
+.submit-form .MuiSelect-selectMenu {
+  width: 120px;
 }
