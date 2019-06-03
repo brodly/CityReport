@@ -5,57 +5,47 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Description from '@material-ui/icons/description';
 
-export default class Report extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      index: this.props.index,
-    };
+const createSubHeaderStyle = (status) => {
+  const style = {
+    lineHeight: '30px',
+    borderRadius: '5px',
+    height: '30px',
+  };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.onMouseEnter = this.onMouseEnter.bind(this);
-  }
+  const statusStyle = {
+    Open: {
+      color: 'rgba(25, 175, 61, 0.54)',
+      backgroundColor: 'rgb(25, 175, 61, 0.2)',
+    },
+    Closed: {
+      color: 'rgba(244, 67, 54, 0.73)',
+      backgroundColor: 'rgba(245, 0, 87, 0.08)',
+    },
+    Cancelled: {
+      backgroundColor: 'rgba(0,0,0,.1)',
+      color: 'rgba(0,0,0,.4)',
+    },
+  };
 
-  handleSubmit(e) {
-    e.preventDefault();
-  }
-
-  onMouseEnter() {
-    const { handleOnMouseEnter } = this.props;
-    const { index }              = this.state;
-
-    handleOnMouseEnter(index);
-  }
-
-  render() {
-    const { address, requesttype, status } = this.props.report;
-
-    return (
-      <div className="report">
-        <ListItem
-          button
-          dense
-          divider
-          alignItems='center'
-          onMouseEnter={this.onMouseEnter}>
-          <ListItemIcon>
-            <Description/>
-          </ListItemIcon>
-          <ListItemText
-            primary={address}
-            secondary={requesttype} />
-          <ListSubheader
-            style={{
-              'color': 'rgba(25, 175, 61, 0.54)',
-              'background-color': 'rgb(25, 175, 61, 0.2)',
-              'line-height': '30px',
-              'border-radius': '5px',
-              'height': '30px',
-            }}>
-            {status}
-          </ListSubheader>
-        </ListItem>
-      </div>
-    );
-  }
+  return Object.assign(style, statusStyle[status])
 }
+
+const Report = ({ report }) => {
+  const { address, requesttype, status } = report;
+
+  return (
+    <div className="report">
+      <ListItem button dense divider alignItems='center'>
+        <ListItemIcon>
+          <Description/>
+        </ListItemIcon>
+        <ListItemText primary={address} secondary={requesttype} />
+        <ListSubheader style={createSubHeaderStyle(status)}>
+          {status}
+        </ListSubheader>
+      </ListItem>
+    </div>
+  );
+};
+
+export default Report;
