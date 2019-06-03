@@ -33,9 +33,7 @@ function ButtonAppBar() {
     <div className={classes.root}>
       <AppBar position="relative">
         <Toolbar>
-          <Typography variant="h4" className={classes.title}>
-            CityReport
-          </Typography>
+          <Typography variant="h4" className={classes.title}>CityReport</Typography>
           <Button color="inherit" onClick={onSubmitClick}>Create New Service Request</Button>
           <Button color="inherit" onClick={onLoginClick}>Login</Button>
         </Toolbar>
