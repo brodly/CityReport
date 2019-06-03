@@ -1,26 +1,39 @@
-.topbar {
-  border: 1px solid black;
-  height:80px;
-  margin: 10px;
-  padding: 20px;
-}
-
-.map {
-  height: 100%;
-  width: 70%;
-  float: right;
-  margin-top: 10px;
-}
-
 .sidebar {
-  margin: 10px;
-  float: left;
-  border: 1px solid black;
-  height: 600px;
-  width: 20%;
-  padding: 20px;
+  overflow: scroll;
+  float: right;
+  height: 88vh;
+  width: 23vw;
 }
 
-#report {
-  font-size: 2em;
+.submit-form {
+  position: absolute;
+  width: 450px;
+  height: auto;
+  display: none;
+  z-index: 1101;
+  top: 10%;
+  left: 30%;
+}
+
+.footer, .row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.footer {
+  margin-top: 20px;
+}
+
+.submit-form .title, .submit-form .MuiFormControl-root {
+  margin: 0px 5px;
+}
+
+.submit-form .MuiSelect-selectMenu {
+  min-width: 130px;
+  padding: 6px 0px 7px;
+}
+
+.submit-form .MuiPaper-root {
+  padding: 15px;
 }

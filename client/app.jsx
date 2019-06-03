@@ -1,9 +1,18 @@
 import React from 'react';
 import axios from 'axios';
-import Map from './components/map';
-import Sidebar from './components/sidebar';
-import Topbar from './components/topbar';
-import Report from './components/report';
+import List from '@material-ui/core/List';
+import {
+  MapContainer,
+  SubmitForm,
+  Topbar,
+  Report,
+  Search,
+ } from './components';
+
+const defaultData = [
+  'requesttype=Single Streetlight Issue',
+  'requesttype=Homeless Encampment',
+];
 
 export default class App extends React.Component {
   constructor() {
@@ -11,41 +20,46 @@ export default class App extends React.Component {
     this.state = {
       data: [],
     }
-    this.fetchData = this.fetchData.bind(this);
+
+    this.fetchData    = this.fetchData.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
   }
 
-  fetchData(val) {
-    axios.get(`/${val}`)
-      .then((res) => {
-        this.setState({
-          data: res.data,
-        })
-      })
+  fetchData(data) {
+    if (data && data.length > 0) {
+      data = data.join("" + '&');
+
+      axios.get(`/search?${data}`)
+      .then(res => { this.setState({ data: res.data }); })
       .catch(err => { throw err });
+    } else {
+      this.setState({ data: [] })
+    }
+  }
+
+  handleFilter(data) {
+    this.fetchData(data)
   }
 
   componentDidMount() {
-    this.fetchData(1);
+    this.fetchData(defaultData);
   }
 
   render() {
-    const { data } = this.state;
-    
+    const { data, selectedListItem } = this.state;
+
     return (
-      <div>
-        <div className="topbar">
-          <Topbar />
-        </div>
+      <div className="main">
+        <Topbar />
+        <SubmitForm docs={data}/>
+        <MapContainer docs={data}/>
         <div className="sidebar">
-          <Sidebar />
-          <Report props={data} />
-          <Report props={data} />
+          <List dense>
+            <Search handleFilter={this.handleFilter}/>
+            {data.map((report, index) => (<Report key={report._id} report={report} />))}
+          </List>
         </div>
-        <div className="map">
-          <Map />
-        </div>
-      </div>      
+      </div>
     );
   }
 }
-
