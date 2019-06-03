@@ -1,7 +1,10 @@
 module.exports = {
-  pothole: {
-    step1: 6,
-    step2: 30,
-    step3: 1,
+  street: {
+    select: 6,
+    pothole: 30,
+    location: {
+      alley: 0,
+      street: 1,
+    }
   }
 }
