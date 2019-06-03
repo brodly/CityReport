@@ -20,7 +20,6 @@ const styles = {
 export class MapContainer extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       showingInfoWindow: false,
       activeMarker: {},
@@ -63,7 +62,6 @@ export class MapContainer extends Component {
   }
 
   onConfimClick(e) {
-    console.log(e);
     e.preventDefault();
   }
 
@@ -90,28 +88,22 @@ export class MapContainer extends Component {
     }
   };
 
-  componentDidMount() {
-
-  }
-
   render() {
-    const { initialCenter, zoom } = this.state;
+    const { initialCenter, zoom }   = this.state;
     const { docs: markers, google } = this.props;
-    const { container, map } = styles;
+    const { container, map }        = styles;
 
-    let userMarkers = markers.map((m, index) => {
-        let userMarker = <Marker
-          key={index}
-          title={m.address}
-          name={m.requesttype}
-          position={{ lat: m.latitude, lng: m.longitude }}
-          icon={this.markerImage}
-          onClick={this.onMarkerClick}
-          shouldRender={m.shouldRender}
-        />
-      m.shouldRender = false
-      return userMarker
-    })
+    const userMarkers = markers.map((marker, index) => (
+      <Marker
+        key={marker._id}
+        title={marker.address}
+        name={marker.requesttype}
+        position={{ lat: marker.latitude, lng: marker.longitude }}
+        icon={this.markerImage}
+        onClick={this.onMarkerClick}
+        shouldRender
+      />
+    ));
 
     if (!this.props.loaded) {
       return <div>Loading...</div>
@@ -126,17 +118,6 @@ export class MapContainer extends Component {
         initialCenter={initialCenter}
         onClick={this.onMapClick}>
         {userMarkers}
-        {
-          // markers.map(m => (
-        //   <Marker
-        //     key={m._id}
-        //     onClick={this.onMarkerClick}
-        //     title={m.address}
-        //     name={m.requesttype}
-        //     icon={this.markerImage}
-        //     position={{ lat: m.latitude, lng: m.longitude }} />
-        // ))
-        }
         <InfoWindow
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}
