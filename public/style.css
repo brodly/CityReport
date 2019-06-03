@@ -6,29 +6,34 @@
 }
 
 .submit-form {
-  border: 1px solid black;
-  position: fixed;
-  width: 400px;
+  position: absolute;
+  width: 450px;
   height: auto;
   display: none;
-  z-index: 4;
-  border-radius: 5px;
-  background-color: white;
-  top: 12%;
+  z-index: 1101;
+  top: 10%;
   left: 30%;
-  padding: 15px;
 }
 
-.submit-form .footer, .row {
+.footer, .row {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
 }
 
-.submit-form .footer {
+.footer {
   margin-top: 20px;
 }
 
+.submit-form .title, .submit-form .MuiFormControl-root {
+  margin: 0px 5px;
+}
+
 .submit-form .MuiSelect-selectMenu {
-  width: 120px;
+  min-width: 130px;
+  padding: 6px 0px 7px;
+}
+
+.submit-form .MuiPaper-root {
+  padding: 15px;
 }
