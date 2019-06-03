@@ -2,9 +2,8 @@ const nightwatch = require('nightwatch');
 
 module.exports = formData => {
   try {
-
     const settings = {
-      globals: formData
+      globals: formData,
     };
 
     nightwatch.cli(function(argv) {
