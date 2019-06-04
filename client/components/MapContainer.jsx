@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 import Button from '@material-ui/core/Button';
 
@@ -17,6 +18,24 @@ const styles = {
   }
 };
 
+export class InfoWindowEx extends Component {
+  constructor(props) {
+    super(props);
+    this.infoWindowRef = React.createRef();
+    this.onInfoWindowOpen = this.onInfoWindowOpen.bind(this);
+    if (!this.containerElement) {
+      this.containerElement = document.createElement(`div`);
+    }
+  }
+  onInfoWindowOpen() {
+    ReactDOM.render(React.Children.only(this.props.children), this.containerElement);
+    this.infoWindowRef.current.infowindow.setContent(this.containerElement);
+  }
+  render() {
+    return <InfoWindow onOpen={this.onInfoWindowOpen} ref={this.infoWindowRef} {...this.props}/>
+  }
+}
+
 export class MapContainer extends Component {
   constructor(props) {
     super(props);
@@ -31,11 +50,11 @@ export class MapContainer extends Component {
       zoom: 11,
     };
 
-    this.onConfimClick = this.onConfimClick.bind(this);
-    this.onMapClick    = this.onMapClick.bind(this);
-    this.onMarkerClick = this.onMarkerClick.bind(this);
-    this.onClose       = this.onClose.bind(this);
+    this.onConfirmClick = this.onConfirmClick.bind(this);
+    this.onMarkerClick  = this.onMarkerClick.bind(this);
+    this.onClose        = this.onClose.bind(this);
 
+    //Marker Image Setings
     this.pinColor          = "#3F51B5";
     this.pinLabel          = "A";
     this.pinSVGHole        = "M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z";
@@ -43,6 +62,7 @@ export class MapContainer extends Component {
     this.pinSVGFilled      = "M 12,2 C 8.1340068,2 5,5.1340068 5,9 c 0,5.25 7,13 7,13 0,0 7,-7.75 7,-13 0,-3.8659932 -3.134007,-7 -7,-7 z";
     this.labelOriginFilled = new this.props.google.maps.Point(12,9);
 
+    // Marker Image Object
     this.markerImage = {
       path: this.pinSVGHole,
       anchor: new this.props.google.maps.Point(12,17),
@@ -54,6 +74,7 @@ export class MapContainer extends Component {
       labelOrigin: this.labelOriginHole,
     };
 
+    // Marker Label Object
     this.label = {
       text: this.pinLabel,
       color: "white",
@@ -61,14 +82,25 @@ export class MapContainer extends Component {
     };
   }
 
-  onConfimClick(e) {
-    e.preventDefault();
-  }
+  onConfirmClick() {
+    const { selectedPlace } = this.state;
+    const { submitData }    = this.props;
 
-  onMapClick(props, e) {
-    // const { google } = this.props
-    // console.log(e.google)
-    // console.log(google.maps);
+    const data = {
+      location: selectedPlace.title,
+      serviceType: selectedPlace.name,
+      requestType: selectedPlace.name,
+      serviceLocation: 'wall',
+      contactType: 'other',
+      fname: '',
+      lname: '',
+      email: '',
+      phone: '',
+      desc: 'Submitted on behalf of CityReport',
+    }
+
+    submitData(data);
+    this.onClose();
   }
 
   onMarkerClick (props, marker, e) {
@@ -89,19 +121,25 @@ export class MapContainer extends Component {
   };
 
   render() {
-    const { initialCenter, zoom }   = this.state;
-    const { docs: markers, google } = this.props;
-    const { container, map }        = styles;
+    const { container, map } = styles;
+    const { docs, google }   = this.props;
+    const {
+      initialCenter,
+      zoom,
+      activeMarker,
+      showingInfoWindow,
+      selectedPlace,
+    }   = this.state;
 
-    const userMarkers = markers.map((marker, index) => (
+    const markers = docs.map((marker, index) => (
       <Marker
+        shouldRender
         key={marker._id}
         title={marker.address}
         name={marker.requesttype}
         position={{ lat: marker.latitude, lng: marker.longitude }}
         icon={this.markerImage}
         onClick={this.onMarkerClick}
-        shouldRender
       />
     ));
 
@@ -117,17 +155,23 @@ export class MapContainer extends Component {
         containerStyle={container}
         initialCenter={initialCenter}
         onClick={this.onMapClick}>
-        {userMarkers}
-        <InfoWindow
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}
+        {markers}
+        <InfoWindowEx
+          marker={activeMarker}
+          visible={showingInfoWindow}
           onClose={this.onClose}>
           <div>
-            <h3>{this.state.selectedPlace.title}</h3>
-            <h4>{this.state.selectedPlace.name}</h4>
-            <a href="/confirm" onClick={this.onConfimClick}>Confirm</a>
+            <h3>{selectedPlace.title}</h3>
+            <h4>{selectedPlace.name}</h4>
+            <Button
+              size="small"
+              color="primary"
+              variant="contained"
+              onClick={this.onConfirmClick}>
+            Confirm
+            </Button>
           </div>
-        </InfoWindow>
+        </InfoWindowEx>
       </Map>
     );
   }
