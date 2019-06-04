@@ -21,6 +21,7 @@ export default class App extends React.Component {
       data: [],
     }
 
+    this.submitData   = this.submitData.bind(this);
     this.fetchData    = this.fetchData.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
   }
@@ -35,6 +36,12 @@ export default class App extends React.Component {
     } else {
       this.setState({ data: [] })
     }
+  }
+
+  submitData(data) {
+    axios.post('/submit', data)
+      .then((res) => console.log(res))
+      .catch((err) => console.error('Error submiting'))
   }
 
   handleFilter(data) {
@@ -52,7 +59,7 @@ export default class App extends React.Component {
       <div className="main">
         <Topbar />
         <SubmitForm docs={data}/>
-        <MapContainer docs={data}/>
+        <MapContainer docs={data} submitData={this.submitData}/>
         <div className="sidebar">
           <List dense>
             <Search handleFilter={this.handleFilter}/>
