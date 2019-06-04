@@ -1,5 +1,5 @@
 const nightwatch = require('nightwatch');
-const settings = require('../lib/settings/settings.js');
+const settings = require('../lib/settings.js');
 
 module.exports = formData => {
   try {
