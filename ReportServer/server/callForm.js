@@ -1,4 +1,5 @@
 const nightwatch = require('nightwatch');
+const settings = require('../lib/settings/settings.js');
 
 module.exports = formData => {
   try {
@@ -7,20 +8,18 @@ module.exports = formData => {
     };
 
     nightwatch.cli(function(argv) {
+      argv.retries = settings.retriesOnError;
       const runner = nightwatch.CliRunner(argv);
       runner
         .setup(settings)
         .startWebDriver()
-        .catch(err => {
-            console.error(err);
-            throw err;
-        })
-        .then(() => { return runner.runTests(); })
+        .catch(err => { throw err; })
+        .then(() => runner.runTests())
         .catch(err => {
             console.error(err);
             runner.processListener.setExitCode(10);
         })
-        .then(() => { return runner.stopWebDriver(); })
+        .then(() => runner.stopWebDriver())
         .catch(err => { console.error(err); });
     });
   } catch (err) {
