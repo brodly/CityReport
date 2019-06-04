@@ -17,9 +17,9 @@ module.exports = {
       desc,
     } = browser.globals;
 
-    const step1 = services[requestType].select;
-    const step2 = services[requestType][serviceType];
-    const step3 = services[requestType].location[serviceLocation];
+    const step1 = services[serviceType].select;
+    const step2 = services[serviceType][serviceType];
+    const step3 = services[serviceType].details[serviceLocation];
 
     browser
       .url('https://myla311.lacity.org/portal/faces/home/service/create-sr')
