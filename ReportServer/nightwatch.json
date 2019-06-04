@@ -11,6 +11,11 @@
     "default" : {
       "desiredCapabilities": {
         "browserName": "chrome"
+      },
+      "screenshots" : {
+        "enabled" : true,
+        "on_failure" : true,
+        "path" : "./screens"
       }
     }
   },
