@@ -27,6 +27,7 @@
 
 .submit-form .title, .submit-form .MuiFormControl-root {
   margin: 0px 5px;
+  /*min-width: 190px;*/
 }
 
 .submit-form .MuiSelect-selectMenu {
